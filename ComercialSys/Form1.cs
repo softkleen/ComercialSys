@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComercialSys.Classes;
 
 namespace ComercialSys
 {
@@ -15,6 +16,13 @@ namespace ComercialSys
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Cliente cliente = new Cliente();
+            cliente.BuscarPorId(int.Parse(txtId.Text));
+            txtNome.Text = cliente.Nome;
         }
     }
 }
