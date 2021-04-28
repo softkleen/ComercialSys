@@ -8,5 +8,11 @@ namespace ComercialSys.Classes
 {
     public class Item
     {
+        // isto é uma propriedade
+        public Produto Produto { get; set; }
+        public double Quantidade { get; set; }
+        public double Valor { get; set; }
+        public double Desconto { get; set; }
+
     }
 }
