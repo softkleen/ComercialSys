@@ -132,5 +132,8 @@
   <ItemGroup>
     <Folder Include="Formularios\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="script_Banco.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

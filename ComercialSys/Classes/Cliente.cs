@@ -48,15 +48,34 @@ namespace ComercialSys.Classes
         public void Inserir()
         {
             // conectar ao banco
+            var cmd = Banco.Abrir();
             // inserir valores na tabela 
+            cmd.CommandText = "insert clientes values (0, '"+Nome+"','"+Cpf+"', '"+Email+"', '"+Telefone +"', default, md5('"+Senha+"'));";
+            cmd.ExecuteNonQuery();
             // atribuir id a Propriedade Id
+            cmd.CommandText = "select @@identity";
+            Id = Convert.ToInt32(cmd.ExecuteScalar());
             // fecha a concexao
         }
         public List<Cliente> Listar() // lista todos os produtos
         {
             List<Cliente> lista = new List<Cliente>();
             // conectar ao banco
-            // buscar registros na tabela 
+            var cmd = Banco.Abrir();
+            cmd.CommandText = "select * from clientes";
+            var dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                lista.Add(new Cliente(
+                   dr.GetInt32(0),
+                   dr.GetString("nome"),
+                   dr.GetString(2),
+                   dr.GetString(3),
+                   dr.GetString(4),
+                   dr.GetString(6),
+                   dr.GetDateTime(5)
+                ));
+            }
             // atribuir registros à lista
             // fecha a concexao
             // entregar lista pra quem chamou
@@ -74,6 +93,11 @@ namespace ComercialSys.Classes
             {
                 Id = dr.GetInt32(0);
                 Nome = dr.GetString("nome");
+                Cpf = dr.GetString(2);
+                Email = dr.GetString(3);
+                Telefone = dr.GetString(4);
+                DataCad = dr.GetDateTime(5);
+                Senha = dr.GetString(6);
 
             }
             // atribuir os valores às propriedades
@@ -83,9 +107,25 @@ namespace ComercialSys.Classes
         {
             bool alterado = false;
             // conectar ao banco
+            var cmd = Banco.Abrir();
             // buscar o registro na tabela  a ser alterado 
             // atribuir os valores às propriedades
+            cmd.CommandText = "update clientes " +
+                "set nome = '"+Nome+"'," +
+                "email = '"+Email+"'," +
+                "telefone = '"+Telefone+"'," +
+                "senha = md5('"+Senha+"')" +
+                "where id = "+id;
             // registra a alteração
+            try
+            {
+                cmd.ExecuteNonQuery();
+                alterado = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             // indica a validação (alterado com sucesso ou não)
             // fecha a concexao
             return alterado;
